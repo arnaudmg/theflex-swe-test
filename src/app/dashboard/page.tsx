@@ -18,7 +18,6 @@ export default function DashboardPage() {
       const data = await response.json();
 
       if (data.status === "success") {
-        // Ensure dates are properly converted to Date objects
         const normalizedData = data.data.map((review: NormalizedReview) => ({
           ...review,
           submittedAt: new Date(review.submittedAt),
@@ -81,7 +80,6 @@ export default function DashboardPage() {
       hostaway: totalReviews,
     };
 
-    // Calculate recent trends (last 30 days)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 

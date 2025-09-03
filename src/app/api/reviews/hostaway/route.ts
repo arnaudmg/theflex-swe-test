@@ -5,13 +5,11 @@ import {
   HostawayApiResponse,
 } from "@/types/reviews";
 
-// In-memory storage for review status changes (simulates database)
 const reviewStatusChanges = new Map<
   number,
   "pending" | "approved" | "rejected"
 >();
 
-// Mock data with reviews from June-September 2025 and unique guest names
 const mockHostawayReviews: HostawayReview[] = [
   {
     id: 7453,
@@ -454,7 +452,6 @@ const mockHostawayReviews: HostawayReview[] = [
     guestName: "Alexander Zverev",
     listingName: "Exquisite Apartment in La Défense",
   },
-  // New reviews with famous computer scientists
   {
     id: 7479,
     type: "guest-to-host",
@@ -540,7 +537,6 @@ const mockHostawayReviews: HostawayReview[] = [
     guestName: "Grace Hopper",
     listingName: "Luxury Tower - Canary Wharf",
   },
-  // New reviews with famous entrepreneurs
   {
     id: 7484,
     type: "guest-to-host",
@@ -636,7 +632,6 @@ function normalizeReview(review: HostawayReview): NormalizedReview {
         review.reviewCategory.length
       : review.rating || 0;
 
-  // Use stored status if it exists, otherwise use original status
   const status = reviewStatusChanges.get(review.id) || review.status;
 
   return {
@@ -657,7 +652,7 @@ export async function GET(request: NextRequest) {
       "61148";
     const apiKey = searchParams.get("apiKey") || process.env.HOSTAWAY_API_KEY;
 
-    // In a real implementation, you would make an API call to Hostaway here
+    // In a real implementation, we would make an API call here
     // const response = await fetch(`https://api.hostaway.com/v1/reviews?accountId=${accountId}`, {
     //   headers: {
     //     'Authorization': `Bearer ${apiKey}`,

@@ -37,7 +37,7 @@ export interface NormalizedReview {
 
 export interface ReviewFilters {
   rating?: number;
-  ratings?: number[]; // Multiple rating selection
+  ratings?: number[];
   category?: string;
   channel?: string;
   listingName?: string;
@@ -46,6 +46,7 @@ export interface ReviewFilters {
     end: Date;
   };
   status?: "pending" | "approved" | "rejected";
+  propertiesNeedingAttention?: boolean;
 }
 
 export interface SortOptions {

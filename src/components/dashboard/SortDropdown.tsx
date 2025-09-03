@@ -18,14 +18,6 @@ export function SortDropdown({ sortOptions, onSortChange }: SortDropdownProps) {
     { value: "listingName", label: "Property" },
   ] as const;
 
-  // const getSortIcon = () => {
-  //   if (sortOptions.direction === "asc") {
-  //     return <ArrowUp className="size-4" />;
-  //   } else {
-  //     return <ArrowDown className="size-4" />;
-  //   }
-  // };
-
   const getSortLabel = () => {
     const field = sortFields.find((f) => f.value === sortOptions.field);
     return field ? field.label : "Date";

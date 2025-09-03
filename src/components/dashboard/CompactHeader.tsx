@@ -16,6 +16,7 @@ interface CompactHeaderProps {
   stats: ReviewStats | null;
   onBacklogClick?: () => void;
   onNormalModeClick?: () => void;
+  onPropertiesNeedingAttentionClick?: () => void;
   isBacklogActive?: boolean;
 }
 
@@ -23,9 +24,9 @@ export function CompactHeader({
   reviews,
   onBacklogClick,
   onNormalModeClick,
+  onPropertiesNeedingAttentionClick,
   isBacklogActive = false,
 }: CompactHeaderProps) {
-  // Calculate 30-day weighted average
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -39,7 +40,6 @@ export function CompactHeader({
         ) / approved30d.length
       : 0;
 
-  // Calculate 90-day weighted average
   const ninetyDaysAgo = new Date();
   ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
@@ -53,19 +53,20 @@ export function CompactHeader({
         ) / approved90d.length
       : 0;
 
-  // Calculate approval rate
   const totalReviews = reviews.length;
   const approvedReviews = reviews.filter((r) => r.status === "approved").length;
   const approvalRate =
     totalReviews > 0 ? (approvedReviews / totalReviews) * 100 : 0;
 
-  // Calculate channel distribution
-  const channelStats = reviews.reduce((acc, review) => {
-    acc[review.channel] = (acc[review.channel] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const lowRatedReviews = reviews.filter((review) => {
+    const rating = review.rating || review.averageCategoryRating;
+    return rating <= 3.0;
+  });
 
-  // Calculate top 3 declining categories
+  const propertiesWithLowRatings = new Set(
+    lowRatedReviews.map((review) => review.listingName)
+  ).size;
+
   const categoryStats = reviews.reduce((acc, review) => {
     review.reviewCategory.forEach((cat) => {
       if (!acc[cat.category]) {
@@ -97,7 +98,6 @@ export function CompactHeader({
     .sort((a, b) => b.decline - a.decline)
     .slice(0, 3);
 
-  // Calculate backlog (only pending reviews)
   const backlog = reviews.filter((r) => r.status === "pending").length;
 
   const cards = [
@@ -151,15 +151,19 @@ export function CompactHeader({
       trendValue: Math.round(approvalRate),
     },
     {
-      title: "Channel Distribution",
-      value: Object.keys(channelStats).length,
-      subtitle: `${Object.values(channelStats)[0] || 0} Hostaway`,
+      title: "Low-Rated Reviews",
+      value: lowRatedReviews.length,
+      subtitle:
+        lowRatedReviews.length > 0
+          ? `${propertiesWithLowRatings} properties affected`
+          : "All reviews performing well",
       icon: TrendingUp,
       color: "bg-white",
       textColor: "text-[#333333]",
       subtitleColor: "text-[#284e4c]",
-      trend: "+",
-      trendValue: Object.keys(channelStats).length,
+      trend: lowRatedReviews.length > 0 ? "-" : "+",
+      trendValue: lowRatedReviews.length,
+      clickable: lowRatedReviews.length > 0,
     },
     {
       title: "Backlog",
@@ -199,6 +203,8 @@ export function CompactHeader({
               card.clickable
                 ? card.title === "Backlog"
                   ? onBacklogClick
+                  : card.title === "Low-Rated Reviews"
+                  ? onPropertiesNeedingAttentionClick
                   : onNormalModeClick
                 : undefined
             }

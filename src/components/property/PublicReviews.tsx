@@ -23,8 +23,6 @@ export function PublicReviews({ reviews }: PublicReviewsProps) {
       />
     ));
   };
-
-  // Generate avatar initials from guest name
   const getAvatarInitials = (name: string) => {
     return name
       .split(" ")
@@ -34,17 +32,16 @@ export function PublicReviews({ reviews }: PublicReviewsProps) {
       .slice(0, 2);
   };
 
-  // Generate avatar background color based on name
   const getAvatarColor = (name: string) => {
     const colors = [
-      "bg-[#284e4c]", // The Flex green
-      "bg-[#2d5a57]", // Darker green variant
-      "bg-[#3a6b68]", // Medium green
-      "bg-[#4a7c79]", // Lighter green
-      "bg-[#5a8d8a]", // Even lighter green
-      "bg-[#6a9e9b]", // Light green
-      "bg-[#7aafac]", // Very light green
-      "bg-[#8ac0bd]", // Lightest green
+      "bg-[#284e4c]",
+      "bg-[#2d5a57]",
+      "bg-[#3a6b68]",
+      "bg-[#4a7c79]",
+      "bg-[#5a8d8a]",
+      "bg-[#6a9e9b]",
+      "bg-[#7aafac]",
+      "bg-[#8ac0bd]",
     ];
     const index = name.charCodeAt(0) % colors.length;
     return colors[index];
@@ -64,14 +61,6 @@ export function PublicReviews({ reviews }: PublicReviewsProps) {
       </div>
     );
   }
-
-  // Calculate average rating (unused but kept for potential future use)
-  // const averageRating =
-  //   reviews.reduce(
-  //     (sum, review) => sum + (review.rating || review.averageCategoryRating),
-  //     0
-  //   ) / reviews.length;
-
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       {/* Header */}

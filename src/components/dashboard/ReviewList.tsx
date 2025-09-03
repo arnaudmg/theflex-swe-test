@@ -22,7 +22,6 @@ interface ReviewListProps {
 }
 
 export function ReviewList({ reviews, onReviewAction }: ReviewListProps) {
-  // Function to convert property name to slug
   const getPropertySlug = (propertyName: string): string => {
     const slugMap: Record<string, string> = {
       "Exquisite Apartment in La Défense": "appartement-exquis-la-defense",

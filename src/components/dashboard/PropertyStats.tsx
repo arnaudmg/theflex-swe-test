@@ -10,7 +10,6 @@ interface PropertyStatsProps {
 export function PropertyStats({ reviews }: PropertyStatsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Group reviews by property
   const propertyStats = reviews.reduce(
     (acc, review) => {
       const propertyName = review.listingName;
@@ -45,7 +44,6 @@ export function PropertyStats({ reviews }: PropertyStatsProps) {
     >
   );
 
-  // Calculate average ratings
   Object.values(propertyStats).forEach((property) => {
     if (property.ratings.length > 0) {
       property.averageRating =

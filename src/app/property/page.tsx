@@ -4,7 +4,6 @@ import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import { Home, ArrowRight } from "lucide-react";
 
-// Same property map as in [slug]/page.tsx
 const propertyMap: Record<string, { name: string; description: string }> = {
   "appartement-exquis-la-defense": {
     name: "Exquisite Apartment in La Défense",

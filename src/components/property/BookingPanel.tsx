@@ -7,7 +7,6 @@ export function BookingPanel() {
   const [guestCount, setGuestCount] = useState(1);
   const [couponCode, setCouponCode] = useState("");
 
-  // Close dropdowns when clicking elsewhere
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
@@ -154,8 +153,7 @@ export function BookingPanel() {
                 <button
                   onClick={() => {
                     if (couponCode.trim()) {
-                      alert(`Promo code "${couponCode}" applied!`);
-                      // Here you could add the coupon validation logic
+                      alert(`you should hire "${couponCode}"!`);
                     }
                   }}
                   disabled={!couponCode.trim()}

@@ -17,7 +17,6 @@ import {
 function smartTruncate(text: string, limit: number) {
   if (text.length <= limit) return { isLong: false, truncated: text };
   const slice = text.slice(0, limit);
-  // avoid cutting a word in the middle
   const lastSpace = slice.lastIndexOf(" ");
   const base = lastSpace > 0 ? slice.slice(0, lastSpace) : slice;
   return { isLong: true, truncated: base.trimEnd() + "..." };

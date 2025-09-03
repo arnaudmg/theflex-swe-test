@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-// Composant pour les images de la galerie
 export function GalleryImage({
   src,
   alt,

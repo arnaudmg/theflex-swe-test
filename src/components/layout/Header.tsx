@@ -11,7 +11,6 @@ export function Header() {
   const [selectedCurrency, setSelectedCurrency] = useState("EUR");
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Close dropdowns when clicking elsewhere
   useEffect(() => {
     const handleClickOutside = () => {
       setShowOwnersMenu(false);
@@ -23,7 +22,6 @@ export function Header() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  // Handle scroll to change header appearance
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;

@@ -6,7 +6,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the main property page
     router.push("/property/appartement-exquis-la-defense");
   }, [router]);
 

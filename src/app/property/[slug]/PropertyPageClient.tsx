@@ -38,7 +38,6 @@ export function PropertyPageClient({ property }: PropertyPageClientProps) {
       const data: HostawayResponse = await response.json();
 
       if (data.status === "success") {
-        // Filter reviews for this specific property and only approved ones
         const propertyReviews = data.data
           .map((review: HostawayReview) => ({
             ...review,
@@ -63,7 +62,6 @@ export function PropertyPageClient({ property }: PropertyPageClientProps) {
           `Found ${propertyReviews.length} approved reviews for this property`
         );
 
-        // Debug: Show all reviews for this property (all statuses)
         const allPropertyReviews = data.data.filter(
           (review: HostawayReview) => review.listingName === property.name
         );

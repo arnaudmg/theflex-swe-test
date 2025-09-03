@@ -38,14 +38,12 @@ export function ReviewDashboard({
 
   const filteredAndSortedReviews = useMemo(() => {
     const filtered = reviews.filter((review) => {
-      // Backlog filter: only show pending reviews
       if (showBacklogOnly) {
         if (review.status !== "pending") {
           return false;
         }
       }
 
-      // Handle both single rating and multiple ratings filter
       if (filters.rating) {
         if ((review.rating || review.averageCategoryRating) < filters.rating) {
           return false;
@@ -83,10 +81,17 @@ export function ReviewDashboard({
           return false;
         }
       }
+
+      if (filters.propertiesNeedingAttention) {
+        const rating = review.rating || review.averageCategoryRating;
+        if (rating > 3.0) {
+          return false;
+        }
+      }
+
       return true;
     });
 
-    // Sort reviews based on sort options
     const sorted = [...filtered].sort((a, b) => {
       let aValue: string | number;
       let bValue: string | number;
@@ -195,7 +200,6 @@ export function ReviewDashboard({
           isBacklogActive={showBacklogOnly}
           onBacklogClick={() => {
             setShowBacklogOnly(!showBacklogOnly);
-            // Clear other filters when showing backlog
             if (!showBacklogOnly) {
               setFilters({});
             }
@@ -203,6 +207,10 @@ export function ReviewDashboard({
           onNormalModeClick={() => {
             setShowBacklogOnly(false);
             setFilters({});
+          }}
+          onPropertiesNeedingAttentionClick={() => {
+            setFilters({ propertiesNeedingAttention: true });
+            setShowBacklogOnly(false);
           }}
         />
       )}
@@ -223,6 +231,26 @@ export function ReviewDashboard({
             <button
               onClick={() => setShowBacklogOnly(false)}
               className="text-xs text-blue-600 hover:text-blue-800 underline"
+            >
+              View all reviews
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Properties Needing Attention Filter Indicator */}
+      {filters.propertiesNeedingAttention && (
+        <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+              <span className="text-sm font-medium text-red-800">
+                Showing only low-rated reviews (≤ 3.0 stars)
+              </span>
+            </div>
+            <button
+              onClick={() => setFilters({})}
+              className="text-xs text-red-600 hover:text-red-800 underline"
             >
               View all reviews
             </button>
@@ -268,7 +296,6 @@ export function ReviewDashboard({
           console.log(`${action} review ${reviewId}`);
 
           if (action === "contact") {
-            // Handle contact action - open email client
             const review = reviews.find((r) => r.id === reviewId);
             if (review) {
               const subject = `Review ${reviewId} - ${review.guestName}`;
@@ -301,7 +328,6 @@ export function ReviewDashboard({
               return;
           }
 
-          // Make API call to update status
           try {
             const response = await fetch("/api/reviews/hostaway", {
               method: "POST",
@@ -317,7 +343,6 @@ export function ReviewDashboard({
             const result = await response.json();
 
             if (result.status === "success" && onUpdateReview) {
-              // Update local state only after successful API call
               onUpdateReview(reviewId, {
                 status: newStatus,
               });

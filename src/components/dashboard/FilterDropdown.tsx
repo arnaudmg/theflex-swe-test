@@ -167,7 +167,6 @@ export function FilterDropdown({
                               } else {
                                 newFilters.ratings = newRatings;
                               }
-                              // Remove old single rating filter
                               delete newFilters.rating;
                               onFiltersChange(newFilters);
                             }}
