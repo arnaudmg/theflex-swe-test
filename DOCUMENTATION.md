@@ -60,8 +60,8 @@
 **Purpose**: Retrieve all reviews with optional filtering
 **Parameters**:
 
-- `accountId` (optional): Defaults to "61148"
-- `apiKey` (optional): Defaults to hardcoded test key
+- `accountId` (optional): Defaults to `HOSTAWAY_ACCOUNT_ID` environment variable or "61148"
+- `apiKey` (optional): Defaults to `HOSTAWAY_API_KEY` environment variable
 
 **Response Format**:
 
@@ -169,7 +169,7 @@
 
 ### Security
 
-- API keys hardcoded (should be environment variables in production)
+- API keys stored in environment variables (`.env.local`)
 - No authentication system implemented
 - CORS handling through Next.js API routes
 - Input validation on API endpoints

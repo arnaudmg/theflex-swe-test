@@ -651,10 +651,11 @@ function normalizeReview(review: HostawayReview): NormalizedReview {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const accountId = searchParams.get("accountId") || "61148";
-    // const apiKey =
-    //   searchParams.get("apiKey") ||
-    //   "f94377ebbbb479490bb3ec364649168dc443dda2e4830facaf5de2e74ccc9152";
+    const accountId =
+      searchParams.get("accountId") ||
+      process.env.HOSTAWAY_ACCOUNT_ID ||
+      "61148";
+    const apiKey = searchParams.get("apiKey") || process.env.HOSTAWAY_API_KEY;
 
     // In a real implementation, you would make an API call to Hostaway here
     // const response = await fetch(`https://api.hostaway.com/v1/reviews?accountId=${accountId}`, {
